@@ -2,6 +2,8 @@ import { useDispatch } from 'react-redux'
 import Layout from '../../hocs/Layout'
 import { useState,useEffect } from 'react'
 import { authSignup} from '../../redux/thunks/authThunk'
+import axios from 'axios'
+import { googleSuccess } from '../../redux/slices/authSlice'
 
 function Signup() {
 
@@ -38,6 +40,17 @@ function Signup() {
     console.log(first_name, last_name, email, password, re_password);
     }
 
+    const continueWithGoogle = async () => {
+      try {
+          const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:5173/google`)
+
+          window.location.replace(res.data.authorization_url);
+          console.log(res.data)
+          dispatch(googleSuccess())
+      } catch (err) {
+        console.log(err)
+      }
+  };
 
     return (
       <>
@@ -144,6 +157,9 @@ function Signup() {
                 </button>
               </div>
             </form>
+            <button className='btn btn-danger mt-3' onClick={continueWithGoogle}>
+                Continue With Google
+            </button>
             <p className="mt-10 text-center text-sm text-gray-500">
               Not a member?{' '}
               <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">

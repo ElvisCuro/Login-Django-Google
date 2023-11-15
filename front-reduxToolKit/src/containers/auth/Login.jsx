@@ -1,22 +1,35 @@
-import { useGoogleLogin } from '@react-oauth/google';
+
 import Layout from '../../hocs/Layout'
 import { useState,useEffect } from 'react'
 import { useDispatch} from 'react-redux';
-import {authLogin } from '../../redux/thunks/authThunk';
+import {authGoogle, authLogin } from '../../redux/thunks/authThunk';
+import axios from 'axios';
+import queryString from 'query-string';
+
+import { useLocation } from 'react-router-dom';
 
 
 function Login  () {
 
     const dispatch = useDispatch();
 
-    const googleLogin = useGoogleLogin({
-      onSuccess: response => console.log(response),
-    
-    });
-    
+    let location = useLocation();
+
     useEffect(() => {
-        window.scrollTo(0,0)
-    }, [])
+      const values = queryString.parse(location.search);
+      const state = values.state ? values.state : null;
+      const code = values.code ? values.code : null;
+
+      console.log('State: ' + state);
+      console.log('Code: ' + code);
+
+      if (state && code) {
+          authGoogle(state, code);
+          dispatch(authGoogle(state,code));
+      }
+      window.scrollTo(0,0)
+  }, [location]);
+
 
     const [accountCreated, setAccountCreated] = useState(false);
 
@@ -38,6 +51,18 @@ function Login  () {
     setAccountCreated(true);
     window.scrollTo(0,0);
     };
+
+    const continueWithGoogle = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:5173/google`)
+          
+
+        window.location.replace(res.data.authorization_url);
+          
+      } catch (err) {
+        console.log(err)
+      }
+  };
 
 
     return (
@@ -99,14 +124,9 @@ function Login  () {
               </div>
             </form>
 
-              <div>
-                <button
-                onClick={() => googleLogin()}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400"
-                >
-                Login with Google
-                </button>
-              </div>
+            <button className='btn btn-danger mt-3' onClick={continueWithGoogle}>
+                Continue With Google
+            </button>
 
             <p className="mt-10 text-center text-sm text-gray-500">
               Not a member?{' '}
