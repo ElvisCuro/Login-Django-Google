@@ -61,14 +61,13 @@ export const authSlice = createSlice({
       state.user= null
     },
     googleSuccess:(state,action)=>{
-      if (action.payload && action.payload.access && action.payload.refresh) {
-        localStorage.setItem('access', action.payload.access);
-        localStorage.setItem('refresh', action.payload.refresh);
-    
-        state.access = action.payload.access;
-        state.refresh = action.payload.refresh;
-        state.isAuthenticated = true;
-      }
+      localStorage.setItem('access', action.payload.access);
+      localStorage.setItem('refresh', action.payload.refresh);
+  
+      state.access = action.payload.access;
+      state.refresh = action.payload.refresh;
+      state.isAuthenticated = true;
+
     }
   },
   extraReducers: (builder) => {
@@ -99,8 +98,11 @@ export const authSlice = createSlice({
       state.payload
     })
 
-    builder.addCase(authGoogle.fulfilled, (state) => {
+    builder.addCase(authGoogle.fulfilled, (state,action) => {
+      state.isAuthenticated = true;
       state.loading = false;
+      state = action.payload
+
     })
 
   },

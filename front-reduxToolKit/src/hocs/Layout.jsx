@@ -7,6 +7,7 @@ import Footer from '../components/navigation/Footer';
 import { useDispatch } from 'react-redux';
 import {authCheck, authGoogle, authLoader, authRefresh } from '../redux/thunks/authThunk';
 import queryString from 'query-string';
+import { googleSuccess } from '../redux/slices/authSlice';
 
 
 
@@ -26,7 +27,8 @@ const Layout = (props) => {
         console.log(code);
 
         if (state && code){
-            dispatch(authGoogle(state,code));
+            dispatch(authGoogle({state,code}));
+            dispatch(googleSuccess({ access: localStorage.getItem('access') }))
         }else{
             dispatch(authRefresh({ access: localStorage.getItem('access') }));
             dispatch(authCheck({ access: localStorage.getItem('access') }));

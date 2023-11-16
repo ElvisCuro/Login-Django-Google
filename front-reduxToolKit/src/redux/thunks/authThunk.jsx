@@ -2,7 +2,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { setAlert } from '../slices/alertSlice';
-import { login } from '../slices/authSlice';
+import { googleSuccess, login } from '../slices/authSlice';
 
 export const authSignup = createAsyncThunk(
   
@@ -255,29 +255,29 @@ export const authRefresh = createAsyncThunk(
 export const authGoogle = createAsyncThunk(
     'auth/authGoogle', 
     async ({ state, code }, { rejectWithValue, dispatch }) => {
-
-    if (state && code && !localStorage.getItem('access')) {
+        console.log(state)
         const config = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         };
+        console.log(localStorage.getItem('access'))
 
         const details = {
             'state': state,
             'code': code
         };
-        console.log(details)
 
         const formBody = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
         console.log(formBody)
+        console.log(config)
 
         try {
             const res = await axios.post(`${import.meta.env.VITE_APP_API_URL}/auth/o/google-oauth2/?${formBody}`, config);
-            dispatch(authLoader({ access: localStorage.getItem('access') }))
+            dispatch(authLoader({ access: localStorage.getItem('access') }));
             return res.data;
         } catch (err) {
             return rejectWithValue(err.message);
         }
     }
-});
+);

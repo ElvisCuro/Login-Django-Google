@@ -2,31 +2,17 @@
 import Layout from '../../hocs/Layout'
 import { useState,useEffect } from 'react'
 import { useDispatch} from 'react-redux';
-import {authGoogle, authLogin } from '../../redux/thunks/authThunk';
+import {authLogin } from '../../redux/thunks/authThunk';
 import axios from 'axios';
-import queryString from 'query-string';
 
-import { useLocation } from 'react-router-dom';
 
 
 function Login  () {
 
     const dispatch = useDispatch();
 
-    let location = useLocation();
 
     useEffect(() => {
-      const values = queryString.parse(location.search);
-      const state = values.state ? values.state : null;
-      const code = values.code ? values.code : null;
-
-      console.log('State: ' + state);
-      console.log('Code: ' + code);
-
-      if (state && code) {
-          authGoogle(state, code);
-          dispatch(authGoogle(state,code));
-      }
       window.scrollTo(0,0)
   }, [location]);
 
@@ -54,11 +40,12 @@ function Login  () {
 
     const continueWithGoogle = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:5173/google`)
-          
+        const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:5173`)
 
-        window.location.replace(res.data.authorization_url);
-          
+        window.location.replace(res.data.authorization_url)
+        console.log(res)
+
+
       } catch (err) {
         console.log(err)
       }

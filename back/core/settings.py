@@ -136,6 +136,8 @@ CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:5173',
      'http://127.0.0.1:5174',
       'http://localhost:5174',
+        'http://localhost:3000',
+    'http://localhost:3000',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -143,6 +145,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
     'http://127.0.0.1:5173',
+    'http://localhost:3000',
+    'http://localhost:3000',
 ]
 
 
@@ -237,7 +241,7 @@ DJOSER = {
     'ACTIVATION_URL': 'activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
-    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://localhost:5173/google'],
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://localhost:8000/google', 'http://localhost:8000/facebook','http://localhost:3000/google','http://localhost:5173','http://localhost:8000',' http://localhost:8000/auth/o/google-oauth2/'],
     'SERIALIZERS': {
         'user_create': 'user.serializers.UserCreateSerializer',
         'user': 'user.serializers.UserCreateSerializer',
@@ -253,8 +257,12 @@ AUTH_USER_MODEL='user.UserAccount'
 
 EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '658578261486-h369vsn8hm9gp2eommfvd3h3m6d6cdic.apps.googleusercontent.com'  
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '658578261486-h369vsn8hm9gp2eommfvd3h3m6d6cdic.apps.googleusercontent.com'  
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '658578261486-uidvu5fj74mmn6pdr0eahv6bp7ghsqnc.apps.googleusercontent.com'  
+
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile', 'openid']
 SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ['first_name', 'last_name']
 

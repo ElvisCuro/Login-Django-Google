@@ -42,11 +42,11 @@ function Signup() {
 
     const continueWithGoogle = async () => {
       try {
-          const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:5173/google`)
+        const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:5173/`)
+          
 
-          window.location.replace(res.data.authorization_url);
-          console.log(res.data)
-          dispatch(googleSuccess())
+        window.location.replace(res.data.authorization_url)
+        console.log(res)
       } catch (err) {
         console.log(err)
       }
