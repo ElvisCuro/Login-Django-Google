@@ -40,7 +40,7 @@ function Login  () {
 
     const continueWithGoogle = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:5173`)
+        const res = await axios.get(`http://localhost:8000/auth/o/google-oauth2/?redirect_uri=http://localhost:8000/google`);
 
         window.location.replace(res.data.authorization_url)
         console.log(res)
@@ -50,6 +50,19 @@ function Login  () {
         console.log(err)
       }
   };
+
+  const continueWithFacebook = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8000/o/facebook/?redirect_uri=http://localhost:5173/facebook`)
+
+      window.location.replace(res.data.authorization_url)
+      console.log(res)
+
+
+    } catch (err) {
+      console.log(err)
+    }
+};
 
 
     return (
@@ -112,6 +125,9 @@ function Login  () {
             </form>
 
             <button className='btn btn-danger mt-3' onClick={continueWithGoogle}>
+                Continue With Google
+            </button>
+            <button className='btn btn-danger mt-3' onClick={continueWithFacebook}>
                 Continue With Google
             </button>
 

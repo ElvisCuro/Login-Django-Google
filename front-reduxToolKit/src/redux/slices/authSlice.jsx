@@ -68,6 +68,15 @@ export const authSlice = createSlice({
       state.refresh = action.payload.refresh;
       state.isAuthenticated = true;
 
+    },
+    facebookSuccess:(state,action)=>{
+      localStorage.setItem('access', action.payload.access);
+      localStorage.setItem('refresh', action.payload.refresh);
+  
+      state.access = action.payload.access;
+      state.refresh = action.payload.refresh;
+      state.isAuthenticated = true;
+
     }
   },
   extraReducers: (builder) => {
@@ -108,6 +117,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { signup, activate, login, loader,logout,googleSuccess } = authSlice.actions;
+export const { signup, activate, login, loader,logout,googleSuccess,facebookSuccess } = authSlice.actions;
 
 export default authSlice.reducer;

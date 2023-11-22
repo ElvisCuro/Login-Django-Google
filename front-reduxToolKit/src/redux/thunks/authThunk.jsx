@@ -255,29 +255,65 @@ export const authRefresh = createAsyncThunk(
 export const authGoogle = createAsyncThunk(
     'auth/authGoogle', 
     async ({ state, code }, { rejectWithValue, dispatch }) => {
-        console.log(state)
-        const config = {
+        if (state && code) {
+          const config = {
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+              'Content-Type': 'application/x-www-form-urlencoded'
             }
-        };
-        console.log(localStorage.getItem('access'))
-
-        const details = {
+          };
+      
+          const details = {
             'state': state,
             'code': code
-        };
+          };
 
-        const formBody = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
-        console.log(formBody)
-        console.log(config)
-
-        try {
-            const res = await axios.post(`${import.meta.env.VITE_APP_API_URL}/auth/o/google-oauth2/?${formBody}`, config);
-            dispatch(authLoader({ access: localStorage.getItem('access') }));
-            return res.data;
+          console.log(state,code)
+      
+          const formBody = Object.keys(details)
+            .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key]))
+            .join('&');
+      
+          try {
+            const res = await axios.post(`http://localhost:8000/auth/o/google-oauth2/?${formBody}`, config);
+            dispatch(authLoader({ access: localStorage.getItem('access') }))
+            console.log(res.data)
+            return res.data
         } catch (err) {
             return rejectWithValue(err.message);
         }
+    }
+    }
+);
+
+export const authFacebook = createAsyncThunk(
+    'auth/authFacebook', 
+    async ({ state, code }, { rejectWithValue, dispatch }) => {
+        if (state && code) {
+          const config = {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          };
+      
+          const details = {
+            'state': state,
+            'code': code
+          };
+
+          console.log(state,code)
+      
+          const formBody = Object.keys(details)
+            .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key]))
+            .join('&');
+      
+          try {
+            const res = await axios.post(`${import.meta.env.VITE_APP_API_URL}/auth/o/facebook/?${formBody}`, config);
+            dispatch(authLoader({ access: localStorage.getItem('access') }))
+            console.log(res.data)
+            return res.data
+        } catch (err) {
+            return rejectWithValue(err.message);
+        }
+    }
     }
 );

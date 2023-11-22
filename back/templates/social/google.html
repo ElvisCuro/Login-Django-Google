@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+        function redirectToClientSide(success_redirect_url) {
+            window.location.replace(`${success_redirect_url}/signin/`);
+        }
+
+        function getFormBody(details) {
+            return Object.keys(details)
+                .map(
+                    (key) =>
+                    encodeURIComponent(key) + "=" + encodeURIComponent(details[key])
+                )
+                .join("&");
+        }
+
+        try {
+            const urlSearchParams = new URLSearchParams(window.location.search);
+            const params = Object.fromEntries(urlSearchParams.entries());
+            const redirect_uri = "{{redirect_uri|safe}}";
+            const success_redirect_url = "{{success_redirect_url|safe}}";
+            
+            if (params.flag === "google") {
+                axios
+                    .get(
+                        `/o/google-oauth2/?redirect_uri=http://localhost:8000/google`
+                    )
+                    .then((res) => {
+                        
+                        window.location.replace(res.data.authorizacion_url);
+                    })
+                    .catch((errors) => {
+                        redirectToClientSide(success_redirect_url);
+                    });
+            } else if (params.state && params.code && !params.flag) {
+                const details = {
+                    state: params.state,
+                    code: params.code,
+                };
+                const formBody = getFormBody(details);
+                axios
+                    .post(`/o/google-oauth2/?${formBody}`)
+                    .then((res) => {
+                        const formBody = getFormBody(res.data);
+                        window.location.replace(
+                            `http://localhost:5173/google/?${formBody}`
+                        );
+                    })
+                    .catch((errors) => {
+                        redirectToClientSide(success_redirect_url);
+                    });
+            } else {
+                redirectToClientSide(success_redirect_url);
+            }
+        } catch {
+            redirectToClientSide(success_redirect_url);
+        }
+    </script>
+</body>
+</html>

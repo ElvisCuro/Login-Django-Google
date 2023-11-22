@@ -2,6 +2,7 @@
 # Bibliotecas fundamentales de Django y su ecosistema
 Django==3.2             # El framework principal de Django
 djangorestframework     # Para crear APIs REST en Django
+djangorestframework_simplejwt
 djoser                  # Para la autenticación y gestión de usuarios en Django REST Framework
 mysqlclient
 

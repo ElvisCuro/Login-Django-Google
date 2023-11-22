@@ -3,7 +3,7 @@ import Layout from '../../hocs/Layout'
 import { useState,useEffect } from 'react'
 import { authSignup} from '../../redux/thunks/authThunk'
 import axios from 'axios'
-import { googleSuccess } from '../../redux/slices/authSlice'
+
 
 function Signup() {
 
@@ -42,7 +42,7 @@ function Signup() {
 
     const continueWithGoogle = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:5173/`)
+        const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:5173/google`)
           
 
         window.location.replace(res.data.authorization_url)
@@ -51,6 +51,19 @@ function Signup() {
         console.log(err)
       }
   };
+
+  const continueWithFacebook = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8000/auth/o/facebook/?redirect_uri=http://localhost:5173/facebook`)
+
+      window.location.replace(res.data.authorization_url)
+      console.log(res)
+
+
+    } catch (err) {
+      console.log(err)
+    }
+};
 
     return (
       <>
@@ -158,6 +171,9 @@ function Signup() {
               </div>
             </form>
             <button className='btn btn-danger mt-3' onClick={continueWithGoogle}>
+                Continue With Google
+            </button>
+            <button className='btn btn-danger mt-3' onClick={continueWithFacebook}>
                 Continue With Google
             </button>
             <p className="mt-10 text-center text-sm text-gray-500">
