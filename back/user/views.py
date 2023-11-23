@@ -119,10 +119,10 @@
 #         return super().post(request, *args, **kwargs)
 
 
-# class LogoutView(APIView):
-    def post(self, request, *args, **kwargs):
-        response = Response(status=status.HTTP_204_NO_CONTENT)
-        response.delete_cookie('access')
-        response.delete_cookie('refresh')
+ # class LogoutView(APIView):
+#     def post(self, request, *args, **kwargs):
+#         response = Response(status=status.HTTP_204_NO_CONTENT)
+#         response.delete_cookie('access')
+#         response.delete_cookie('refresh')
 
-        return response
+#         return response

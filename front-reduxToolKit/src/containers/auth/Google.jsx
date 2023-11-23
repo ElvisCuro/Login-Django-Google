@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import queryString from 'query-string';
 import { authGoogle } from '../../redux/thunks/authThunk';
 
+
 const Google = () => {
     const dispatch = useDispatch();
     let location = useLocation();
@@ -23,6 +24,7 @@ const Google = () => {
     }, [location]);
 
     return (
+        <>
         <div className='container'>
             <div className='jumbotron mt-5'>
                 <h1 className='display-4'>Welcome to Auth System!</h1>
@@ -32,6 +34,7 @@ const Google = () => {
                 <Link class='btn btn-primary btn-lg' to='/login' role='button'>Login</Link>
             </div>
         </div>
+        </>
     );
 };
 

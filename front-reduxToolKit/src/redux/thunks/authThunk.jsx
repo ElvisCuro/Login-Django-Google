@@ -2,7 +2,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { setAlert } from '../slices/alertSlice';
-import { googleSuccess, login } from '../slices/authSlice';
+import { facebookSuccess, googleSuccess, login } from '../slices/authSlice';
 
 export const authSignup = createAsyncThunk(
   
@@ -31,7 +31,7 @@ export const authSignup = createAsyncThunk(
         
         if (res.status === 201) {
             dispatch(setAlert({
-                msg: 'Te enviamos un correo, por favor activa tu cuenta. Revisa el correo de spam',
+                msg: 'Se enviodaa ',
                 alertType: 'green' 
             }))
             return res.data
@@ -169,8 +169,6 @@ export const authLoader = createAsyncThunk(
 });
 
 
-
-
 export const authCheck = createAsyncThunk(
     'auth/authCheck', 
     async ({ rejectWithValue }) => {
@@ -251,7 +249,6 @@ export const authRefresh = createAsyncThunk(
     }
 );
 
-
 export const authGoogle = createAsyncThunk(
     'auth/authGoogle', 
     async ({ state, code }, { rejectWithValue, dispatch }) => {
@@ -274,9 +271,12 @@ export const authGoogle = createAsyncThunk(
             .join('&');
       
           try {
-            const res = await axios.post(`http://localhost:8000/auth/o/google-oauth2/?${formBody}`, config);
-            dispatch(authLoader({ access: localStorage.getItem('access') }))
+            const res = await axios.post(`http://localhost:8000/auth/o/facebook/?${formBody}`, config);
+            dispatch(facebookSuccess(res.data));
+            // const res = await axios.post(`http://localhost:8000/auth/o/google-oauth2/?${formBody}`, config);
+            // dispatch(googleSuccess(res.data));
             console.log(res.data)
+            dispatch(authLoader({ access: localStorage.getItem('access') }))
             return res.data
         } catch (err) {
             return rejectWithValue(err.message);
@@ -307,7 +307,7 @@ export const authFacebook = createAsyncThunk(
             .join('&');
       
           try {
-            const res = await axios.post(`${import.meta.env.VITE_APP_API_URL}/auth/o/facebook/?${formBody}`, config);
+            const res = await axios.post(`ttp://localhost:8000/auth/o/facebook/?${formBody}`, config);
             dispatch(authLoader({ access: localStorage.getItem('access') }))
             console.log(res.data)
             return res.data

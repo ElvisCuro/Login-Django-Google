@@ -17,8 +17,8 @@ return (
 
     <Router>
       <Routes>
-        <Route path="*" element={<Error404/>}/>
-        <Route exact path="/" element={<Home/>}/>
+        <Route path='*' element={<Error404/>}/>
+        <Route exact path='/' element={<Home/>}/>
         {/* Autenticacion */}
         <Route exact path='/signup' element={<Signup/>}/>
         <Route exact path='/login' element={<Login />} />
