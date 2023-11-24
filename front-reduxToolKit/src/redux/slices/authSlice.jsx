@@ -6,7 +6,6 @@ import {
   authLoader,
   authCheck,
   authRefresh,
-  authFacebook,
   authGoogle,
 } from "../thunks/authThunk";
 
@@ -69,15 +68,6 @@ export const authSlice = createSlice({
       state.refresh = action.payload.refresh;
       state.isAuthenticated = true;
 
-    },
-    facebookSuccess:(state,action)=>{
-      localStorage.setItem('access', action.payload.access);
-      localStorage.setItem('refresh', action.payload.refresh);
-  
-      state.access = action.payload.access;
-      state.refresh = action.payload.refresh;
-      state.isAuthenticated = true;
-
     }
   },
   extraReducers: (builder) => {
@@ -114,16 +104,8 @@ export const authSlice = createSlice({
       state.refresh = action.payload.refresh; // Asigna el valor de refresh desde action.payload
       state.user = action.payload.user;
     })
-
-    builder.addCase(authFacebook.fulfilled, (state,action) => {
-      state.loading = false;
-      state.access = action.payload.access; // Asigna el valor de access desde action.payload
-      state.refresh = action.payload.refresh; // Asigna el valor de refresh desde action.payload
-      state.user = action.payload.user;
-    })
-
   },
 });
-export const { signup, activate, login, loader,logout,googleSuccess,facebookSuccess } = authSlice.actions;
+export const { signup, activate, login, loader,logout,googleSuccess} = authSlice.actions;
 
 export default authSlice.reducer;

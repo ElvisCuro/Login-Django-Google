@@ -5,9 +5,6 @@ import Home from './containers/Home'
 import Signup from './containers/auth/Signup'
 import Login from './containers/auth/Login'
 import Activate from './containers/auth/Activate'
-import Facebook from './containers/auth/Facebook';
-import Google from './containers/auth/Google';
-
 
 function App() {
 
@@ -22,10 +19,6 @@ return (
         {/* Autenticacion */}
         <Route exact path='/signup' element={<Signup/>}/>
         <Route exact path='/login' element={<Login />} />
-        {/* <Route exact path='/facebook' element={<Facebook />} />
-        <Route exact path='/google' element={<Google />} /> */}
-        <Route exact path="/facebook" component={Facebook} />
-        <Route exact path="/google" component={Google} />
         <Route exact path='/activate/:uid/:token' element={<Activate/>}/>
       </Routes>
     </Router>

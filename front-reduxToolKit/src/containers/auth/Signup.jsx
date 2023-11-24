@@ -2,7 +2,6 @@ import { useDispatch } from 'react-redux'
 import Layout from '../../hocs/Layout'
 import { useState,useEffect } from 'react'
 import { authSignup} from '../../redux/thunks/authThunk'
-import axios from 'axios'
 
 
 function Signup() {
@@ -36,34 +35,8 @@ function Signup() {
     dispatch(authSignup({ first_name, last_name, email, password, re_password }));
     
     window.scrollTo(0, 0)
-    console.log(formData);
-    console.log(first_name, last_name, email, password, re_password);
     }
 
-    const continueWithGoogle = async () => {
-      try {
-        const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:5173/google`)
-          
-
-        window.location.replace(res.data.authorization_url)
-        console.log(res)
-      } catch (err) {
-        console.log(err)
-      }
-  };
-
-  const continueWithFacebook = async () => {
-    try {
-      const res = await axios.get(`http://localhost:8000/auth/o/facebook/?redirect_uri=http://localhost:5173/facebook`)
-
-      window.location.replace(res.data.authorization_url)
-      console.log(res)
-
-
-    } catch (err) {
-      console.log(err)
-    }
-};
 
     return (
       <>
@@ -170,18 +143,6 @@ function Signup() {
                 </button>
               </div>
             </form>
-            <button className='btn btn-danger mt-3' onClick={continueWithGoogle}>
-                Continue With Google
-            </button>
-            <button className='btn btn-danger mt-3' onClick={continueWithFacebook}>
-                Continue With Google
-            </button>
-            <p className="mt-10 text-center text-sm text-gray-500">
-              Not a member?{' '}
-              <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                Start a 14 day free trial
-              </a>
-            </p>
           </div>
         </div>
         </Layout>

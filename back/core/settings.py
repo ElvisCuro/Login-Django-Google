@@ -54,12 +54,12 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS=[
     'corsheaders',
     'rest_framework',
+    'ckeditor',
+    'ckeditor_uploader',
     'djoser',
     'social_django',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
-    'ckeditor',
-    'ckeditor_uploader',
 ]
 
 INSTALLED_APPS=DJANGO_APPS+ECOMMERCE_APPS+THIRD_PARTY_APPS
@@ -129,8 +129,6 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
     'http://127.0.0.1:5173',
-    'http://127.0.0.1:5174',
-    'http://localhost:5174',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -201,9 +199,7 @@ REST_FRAMEWORK = {
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "djoser.social.backends.facebook.FacebookOAuth2",
     "social_core.backends.google.GoogleOAuth2",
-    # "social_core.backends.steam.SteamOpenId",
 ]
 
 SIMPLE_JWT = {
@@ -224,14 +220,10 @@ DJOSER = {
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
     'SEND_CONFIRMATION_EMAIL': True,
     'SET_USERNAME_RETYPE': True,
-    # 'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
-    # 'SET_PASSWORD_RETYPE': True,
-    # 'PASSWORD_RESET_CONFIRM_RETYPE': True,
-    # 'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': 'activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
-    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://localhost:8000', 'http://localhost:8000/facebook','http://localhost:8000/google'],
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://localhost:8000'],
     'SERIALIZERS': {
         'user_create': 'user.serializers.UserCreateSerializer',
         'user': 'user.serializers.UserCreateSerializer',
@@ -245,6 +237,8 @@ DJOSER = {
 
 EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 
+# SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '658578261486-0to6m7nsaotv4t5vg0jjs70p1afvqotn.apps.googleusercontent.com'  
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
@@ -252,17 +246,6 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile', 'openid']
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ['first_name', 'last_name']
-
-SOCIAL_AUTH_FACEBOOK_KEY = '846164133877450'
-
-SOCIAL_AUTH_FACEBOOK_SECRET = '0a77c7ea8f2d5363f376af14876e7e10'
-
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'fields': 'email, first_name, last_name'
-}
-
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

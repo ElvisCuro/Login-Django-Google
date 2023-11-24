@@ -22,9 +22,6 @@ export const authSignup = createAsyncThunk(
         password,
         re_password
       });
-    
-      console.log(first_name, last_name, email, password, re_password);
-      console.log(body); 
 
       try {
         const res = await axios.post(`${import.meta.env.VITE_APP_API_URL}/auth/users/`, body, config);
@@ -42,7 +39,7 @@ export const authSignup = createAsyncThunk(
             }))
         }    
     } catch (err) {
-        console.log(err);
+
         dispatch(setAlert({
             msg: 'Error conectando con el servidor, intenta mas tarde.',
             alertType: 'red' 
@@ -67,9 +64,6 @@ export const authActivate = createAsyncThunk(
         uid,
         token
     });
-
-    console.log(uid,token);
-    console.log(body);
 
     try {
         const res = await axios.post(`${import.meta.env.VITE_APP_API_URL}/auth/users/activation/`, body, config);
@@ -109,7 +103,6 @@ export const authLogin = createAsyncThunk(
             password
         });
 
-        console.log(body)
 
         try {
             const res = await axios.post(`${import.meta.env.VITE_APP_API_URL}/auth/jwt/create/`, body, config);
@@ -139,7 +132,7 @@ export const authLoader = createAsyncThunk(
     'auth/authLoader', 
     async ({ rejectWithValue}) => {
         const access = window.localStorage.getItem('access');
-        console.log(access)
+
 
         if (access) {
             const config = {
@@ -148,11 +141,11 @@ export const authLoader = createAsyncThunk(
                     'Accept': 'application/json'
                 }
             };
-            console.log(config);
+
     
             try {
                 const res = await axios.get(`${import.meta.env.VITE_APP_API_URL}/auth/users/me/`,config);
-                console.log(res)
+
                 if (res.status === 200) {
                     return res.data;
 
@@ -173,7 +166,6 @@ export const authCheck = createAsyncThunk(
     'auth/authCheck', 
     async ({ rejectWithValue }) => {
         const access = window.localStorage.getItem('access');
-        console.log(access)
 
         if (access) {
             const config = {
@@ -187,7 +179,6 @@ export const authCheck = createAsyncThunk(
                 token: localStorage.getItem('access')
             });
 
-            console.log(body)
 
             try {
                 const res = await axios.post(`${import.meta.env.VITE_APP_API_URL}/auth/jwt/verify/`, body, config);
@@ -212,7 +203,7 @@ export const authRefresh = createAsyncThunk(
     'auth/authRefresh',
     async ({ rejectWithValue }) => {
         const access = window.localStorage.getItem('access');
-        console.log(access)
+
 
         if (access) {
             const config = {
@@ -226,7 +217,7 @@ export const authRefresh = createAsyncThunk(
                 refresh: localStorage.getItem('refresh')
             });
 
-            console.log(body)
+
             try {
                 const res = await axios.post(`${import.meta.env.VITE_APP_API_URL}/auth/jwt/refresh/`, body, config);
 
@@ -264,52 +255,17 @@ export const authGoogle = createAsyncThunk(
             'code': code
           };
 
-          console.log(state,code)
+
       
           const formBody = Object.keys(details)
             .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key]))
             .join('&');
       
           try {
-            const res = await axios.post(`http://localhost:8000/auth/o/facebook/?${formBody}`, config);
-            dispatch(facebookSuccess(res.data));
-            // const res = await axios.post(`http://localhost:8000/auth/o/google-oauth2/?${formBody}`, config);
-            // dispatch(googleSuccess(res.data));
-            console.log(res.data)
-            dispatch(authLoader({ access: localStorage.getItem('access') }))
-            return res.data
-        } catch (err) {
-            return rejectWithValue(err.message);
-        }
-    }
-    }
-);
+            const res = await axios.post(`http://localhost:8000/auth/o/google-oauth2/?${formBody}`, config);
+            dispatch(googleSuccess(res.data));
 
-export const authFacebook = createAsyncThunk(
-    'auth/authFacebook', 
-    async ({ state, code }, { rejectWithValue, dispatch }) => {
-        if (state && code) {
-          const config = {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          };
-      
-          const details = {
-            'state': state,
-            'code': code
-          };
-
-          console.log(state,code)
-      
-          const formBody = Object.keys(details)
-            .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key]))
-            .join('&');
-      
-          try {
-            const res = await axios.post(`ttp://localhost:8000/auth/o/facebook/?${formBody}`, config);
             dispatch(authLoader({ access: localStorage.getItem('access') }))
-            console.log(res.data)
             return res.data
         } catch (err) {
             return rejectWithValue(err.message);

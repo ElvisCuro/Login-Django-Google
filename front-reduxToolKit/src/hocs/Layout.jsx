@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import Navbar from '../components/navigation/Navbar';
 import Footer from '../components/navigation/Footer';
 import { useDispatch } from 'react-redux';
-import {authCheck, authFacebook, authGoogle, authLoader, authRefresh } from '../redux/thunks/authThunk';
+import {authCheck, authGoogle, authLoader, authRefresh } from '../redux/thunks/authThunk';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 
@@ -24,12 +24,11 @@ const Layout = (props) => {
             const state = values.state ? values.state : null;
             const code = values.code ? values.code : null;
     
-            console.log(state);
-            console.log(code);
+  
+ 
     
             if (state && code){
-                dispatch(authFacebook({state,code}));
-                // dispatch(authGoogle({state,code}));
+                dispatch(authGoogle({state,code}));
                 dispatch(authLoader({ access: localStorage.getItem('access') }));
                 dispatch(authCheck({ access: localStorage.getItem('access') }));
             }else{
