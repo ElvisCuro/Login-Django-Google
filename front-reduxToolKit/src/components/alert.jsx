@@ -7,7 +7,6 @@ function Alert() {
   const alert = useSelector(state => state.Alert.alert)
   const dispatch = useDispatch()
 
-  console.log(alert)
 
   useEffect(() => {
     const timeout = setTimeout(() => {
